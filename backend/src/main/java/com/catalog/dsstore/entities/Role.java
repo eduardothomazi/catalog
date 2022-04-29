@@ -1,4 +1,4 @@
-package com.eduardo.catalog.entities;
+package com.catalog.dsstore.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,19 +14,13 @@ public class Role implements Serializable {
     private Long id;
     private String authority;
 
+
+
     public Role() {
     }
 
-    public Role(Long id, String authority) {
-        this.id = id;
+    public Role(String authority, Long id) {
         this.authority = authority;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,6 +30,14 @@ public class Role implements Serializable {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

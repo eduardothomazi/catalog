@@ -1,10 +1,8 @@
-package com.eduardo.catalog.entities;
+package com.catalog.dsstore.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_user")
@@ -20,7 +18,7 @@ public class User implements Serializable {
     private String password;
 
     @OneToMany
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -73,7 +71,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
