@@ -6,6 +6,7 @@ import com.catalog.dsstore.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,26 @@ public class CategoryService {
 
     public void deleteById(Long id){
         repository.deleteById(id);
+    }
+
+    public CategoryDTO create(CategoryDTO dto) throws Exception {
+        if (dto.getId() == null){
+            repository.save(new Category(dto));
+            return dto;
+        }else throw new Exception("This id already exists!");
+    }
+
+    public CategoryDTO update(Long id, CategoryDTO obj){
+        try {
+            CategoryDTO categoryDTO = obj;
+            if (obj.getId() == null){
+                obj.setId(id);
+            }
+            repository.save(new Category(categoryDTO));
+            return categoryDTO;
+        }catch (EntityNotFoundException e){
+            throw new RuntimeException();
+        }
     }
 
 

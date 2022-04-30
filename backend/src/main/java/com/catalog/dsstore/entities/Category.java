@@ -1,5 +1,7 @@
 package com.catalog.dsstore.entities;
 
+import com.catalog.dsstore.dto.CategoryDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -30,6 +32,14 @@ public class Category implements Serializable {
     public Category(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Category(CategoryDTO category) {
+        this.id = category.getId();
+        this.name = category.getName();
+        this.createdAt = category.getCreatedAt();
+        this.updatedAt = category.getUpdatedAt();
+        products = category.getProducts();
     }
 
     public Long getId() {

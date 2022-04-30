@@ -5,7 +5,9 @@ import com.catalog.dsstore.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +33,18 @@ public class CategoryController {
     @DeleteMapping(value = "/{id}")
     public void deleteById(@PathVariable Long id){
         service.deleteById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO dto) throws Exception {
+        CategoryDTO categoryDTO = service.create(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/id").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(categoryDTO);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO obj) throws Exception {
+        CategoryDTO categoryDTO = service.update(id, obj);
+        return ResponseEntity.ok().body(categoryDTO);
     }
 }
