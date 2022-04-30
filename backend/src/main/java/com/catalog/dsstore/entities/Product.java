@@ -1,5 +1,7 @@
 package com.catalog.dsstore.entities;
 
+import com.catalog.dsstore.dto.ProductDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -41,6 +43,15 @@ public class Product implements Serializable {
         this.price = price;
         this.imgUrl = imgUrl;
         this.date = date;
+    }
+
+    public Product(ProductDTO dto) {
+        id = dto.getId();
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.price = dto.getPrice();
+        this.imgUrl = dto.getImgUrl();
+        this.date = dto.getDate();
     }
 
     public Long getId() {

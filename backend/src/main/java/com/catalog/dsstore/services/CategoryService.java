@@ -4,7 +4,10 @@ import com.catalog.dsstore.dto.CategoryDTO;
 import com.catalog.dsstore.entities.Category;
 import com.catalog.dsstore.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -17,40 +20,46 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
-    public List<CategoryDTO> findAll(){
+    @Transactional(readOnly = true)
+    public List<CategoryDTO> findAll() {
         List<Category> obj = repository.findAll();
         List<CategoryDTO> dto = obj.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
         return dto;
     }
 
-    public Optional<CategoryDTO> findById(Long id){
+    @Transactional(readOnly = true)
+    public Optional<CategoryDTO> findById(Long id) {
         Optional<Category> optional = repository.findById(id);
         Optional<CategoryDTO> dto = Optional.of(new CategoryDTO(optional.get()));
         return dto;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 
     public CategoryDTO create(CategoryDTO dto) throws Exception {
-        if (dto.getId() == null){
+        if (dto.getId() == null) {
             repository.save(new Category(dto));
             return dto;
-        }else throw new Exception("This id already exists!");
+        } else throw new Exception("This id already exists!");
     }
 
-    public CategoryDTO update(Long id, CategoryDTO obj){
+    public CategoryDTO update(Long id, CategoryDTO obj) {
         try {
-            CategoryDTO categoryDTO = obj;
-            if (obj.getId() == null){
-                obj.setId(id);
-            }
-            repository.save(new Category(categoryDTO));
-            return categoryDTO;
-        }catch (EntityNotFoundException e){
+            obj.setId(id);
+            repository.save(new Category(obj));
+            return obj;
+        } catch (EntityNotFoundException e) {
             throw new RuntimeException();
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CategoryDTO> findPaged(PageRequest request){
+        Page<Category> categoryPage = repository.findAll(request);
+        Page<CategoryDTO> dtoPage = categoryPage.map(x -> new CategoryDTO(x));
+        return dtoPage;
     }
 
 
