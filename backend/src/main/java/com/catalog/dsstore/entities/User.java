@@ -1,5 +1,7 @@
 package com.catalog.dsstore.entities;
 
+import com.catalog.dsstore.dto.UserDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -29,6 +31,14 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(UserDTO obj) {
+        this.id = obj.getId();
+        this.firstName = obj.getFirstName();
+        this.lastName = obj.getLastName();
+        this.email = obj.getEmail();
+        this.password = obj.getPassword();
     }
 
     public Long getId() {
