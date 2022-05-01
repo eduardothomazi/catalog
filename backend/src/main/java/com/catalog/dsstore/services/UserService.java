@@ -51,12 +51,12 @@ public class UserService {
 
     public UserDTO update(Long id, UserDTO obj) {
         try {
-            obj.setId(id);
-            User user = new User(obj);
-            repository.save(user);
+            Optional<User> user = repository.findById(id);
+            obj.setId(user.get().getId());
+            repository.save(user.get());
             return obj;
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

@@ -51,11 +51,12 @@ public class ProductService {
 
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
-            dto.setId(id);
-            repository.save(new Product(dto));
+            Optional<Product> product = repository.findById(id);
+            dto.setId(product.get().getId());
+            repository.save(product.get());
             return dto;
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

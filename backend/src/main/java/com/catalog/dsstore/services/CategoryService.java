@@ -47,11 +47,12 @@ public class CategoryService {
 
     public CategoryDTO update(Long id, CategoryDTO obj) {
         try {
-            obj.setId(id);
-            repository.save(new Category(obj));
+            Optional<Category> category = repository.findById(id);
+            obj.setId(category.get().getId());
+            repository.save(category.get());
             return obj;
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
